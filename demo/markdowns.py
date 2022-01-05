@@ -249,6 +249,8 @@ radio_selection_styles = """
 <style>
     div.row-widget.stRadio > div {
         height: 100px;
+        
+        
     }
     div.row-widget.stRadio > div > label {
         margin-bottom: 6px;

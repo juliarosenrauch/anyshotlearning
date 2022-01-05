@@ -35,7 +35,7 @@ show_rec = False
 
 def main():
     st.set_page_config(page_title="2163 - Any Shot Learning",
-                        page_icon=path+"images/cvlab.png",
+                        page_icon=path+"/images/cvlab.png",
                         layout="wide")
                         # initial_sidebar_state='expanded'
 
@@ -49,7 +49,7 @@ def main():
     with st.expander("See more"):
         st.markdown(markdowns.motivation_string, unsafe_allow_html=True)
         bcol1, bcol2, bcol3 = st.columns([1, 1, 1])
-        bcol2.image(path+"images/image_vs_instance.png", width=550)
+        bcol2.image(path+"/images/image_vs_instance.png", width=550)
 
     # intro to UBC computer vision lab
 
@@ -59,7 +59,7 @@ def main():
     with st.expander("See more"):
         st.markdown(markdowns.unit_string, unsafe_allow_html=True)
         bcol1, bcol2, bcol3 = st.columns([1, 1, 1])
-        bcol2.image(path+"images/unit.png", width=550)
+        bcol2.image(path+"/images/unit.png", width=550)
 
     # about the dataset(s)
     # what kind of annotations there are 

@@ -8,7 +8,8 @@ import pandas as pd
 import numpy as np
 from PIL import Image
 
-ROOT_DIR = "/images"
+path = os.path.dirname(__file__)
+ROOT_DIR = path+'/images'
 
 img_data = [
     join(ROOT_DIR, "select_images/bus.jpg"),

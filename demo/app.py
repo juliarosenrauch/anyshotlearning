@@ -23,12 +23,12 @@ img_data = [
 imgs = [open(i, 'rb').read() for i in img_data]
 
 loaded_images = {
-    "A": imgs[0],
-    "B": imgs[1],
-    "C": imgs[2],
-    "D": imgs[3],
-    "E": imgs[4],
-    "F": imgs[5],
+    "bus": imgs[0],
+    "couch": imgs[1],
+    "fruits": imgs[2],
+    "sheep": imgs[3],
+    "tennis": imgs[4],
+    "umbrella": imgs[5],
 }
 
 show_rec = False
@@ -38,6 +38,25 @@ def main():
                         page_icon=path+"/images/cvlab.png",
                         layout="wide")
                         # initial_sidebar_state='expanded'
+
+    padding = 0
+    st.markdown(f""" <style>
+        .reportview-container .main .block-container{{
+            padding-top: {padding}rem;
+            padding-bottom: {padding}rem;
+    }} </style> """, unsafe_allow_html=True)
+
+    hide_decoration_bar_style = '''
+        <style>
+            header {visibility: hidden;}
+        </style>
+    '''
+    st.markdown(hide_decoration_bar_style, unsafe_allow_html=True)
+    
+    st.markdown(""" <style>
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+        </style> """, unsafe_allow_html=True)
 
     # st.sidebar.header('2163 - Any Shot Learning')
     # selected_demo = st.sidebar.selectbox('Select a Demo', np.array(["test1", "test2"]))
@@ -61,28 +80,35 @@ def main():
         bcol1, bcol2, bcol3 = st.columns([1, 1, 1])
         bcol2.image(path+"/images/unit.png", width=550)
 
-    # about the dataset(s)
-    # what kind of annotations there are 
-    # st.markdown(markdowns.dataset_title, unsafe_allow_html=True)
-    # with st.expander("See more"):
-    #     st.markdown(markdowns.dataset, unsafe_allow_html=True)
-
-    # dataset in context of paper - base vs novel? which classes?
-
-
     # select image of provided images
-    st.markdown(markdowns.object_selection_header, unsafe_allow_html=True)
-    radio_selection_col, image_selection_col, col3 = st.columns([2, 1, 1])
-    col1, col2, col3, col4, col5, col6 = st.columns([1,1,1,1,1,1])
-    with radio_selection_col:
-        st.write(markdowns.radio_selection_styles, unsafe_allow_html=True)
-        selected_image = st.radio("", list(loaded_images.keys()))
 
-    with image_selection_col:
-        st.image(loaded_images[selected_image],
-                caption='Selected Object',
-                width=350)
+    # st.markdown(markdowns.object_selection_header, unsafe_allow_html=True)
+    # radio_selection_col, image_selection_col, col3 = st.columns([2, 1, 1])
+    # col1, col2, col3, col4, col5, col6 = st.columns([1,1,1,1,1,1])
+    # with radio_selection_col:
+    #     st.write(markdowns.radio_selection_styles, unsafe_allow_html=True)
+    #     selected_image = st.radio("", list(loaded_images.keys()))
 
+    # with image_selection_col:
+    #     st.image(loaded_images[selected_image],
+    #             caption='Selected Object',
+    #             width=350)
+
+    #st.image(imgs, width=250, caption=[1,2,3,4,5,6])
+
+    st.markdown(markdowns.choose_image_header, unsafe_allow_html=True)
+
+    image_columns = st.columns([1,1,1,1,1,1])
+    for i, col in enumerate(image_columns):
+        col.image(imgs[i], width=200)
+
+    selection_columns = st.columns([1,1,1,1,1,1])
+    checkboxkey = ['1','2','3','4','5','6']
+    selected = [False]*6
+    for i, col in enumerate(selection_columns):
+        # st.write(markdowns.radio_selection_styles, unsafe_allow_html=True)
+        # selected_image = st.radio("", list(loaded_images.keys()))
+        col.checkbox(checkboxkey[i])
 
     # OR
     # upload your own
@@ -95,6 +121,7 @@ def main():
                  width=350)
 
     # select a model
+    st.markdown(markdowns.select_model_header, unsafe_allow_html=True)
     model_options = ("None", "Pre-trained A", "Pre-trained B")
     st.write(markdowns.selectbox_styles, unsafe_allow_html=True)
     selected_model = st.selectbox("Select a model", model_options)
@@ -114,25 +141,11 @@ def main():
     if show_rec:
         st.write("reconstruction")
 
-    # threshold = st.slider("Threshold Value",
-    #                       min_value=-0.3,
-    #                       max_value=0.3,
-    #                       value=0.0,
-    #                       step=0.001)
-    # if threshold:
-    #     st.write("show threshold diff")
-
     st.download_button(
         label = 'Download some text', 
         data = '''text_contents''', 
         file_name = "my_file.xml", 
         mime='application/xml')
-
-    # with open(uploaded_file, "rb'") as file:
-    #     btn = st.download_button(label="Download data as CSV", 
-    #                     data=uploaded_file, 
-    #                     file_name='uploaded_file.png', 
-    #                     mime='image/png')
 
 if __name__ == "__main__":
     main()

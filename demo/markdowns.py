@@ -259,6 +259,9 @@ radio_selection_styles = """
 
 upload_file_header = """<h2 align="left" style="margin-top: 2rem;">Or upload your own</h2>"""
 
+choose_image_header = """<h2 align="left" style="margin-top: 2rem;">Select an image</h2>"""
+
+select_model_header = """<h2 align="left" style="margin-top: 2rem;">Choose a model</h2>"""
 
 selectbox_styles = """
 <style>

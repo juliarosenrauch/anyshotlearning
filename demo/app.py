@@ -37,30 +37,17 @@ def main():
     st.set_page_config(page_title="2163 - Any Shot Learning",
                         page_icon=path+"/images/cvlab.png",
                         layout="wide")
-                        # initial_sidebar_state='expanded'
-
-    padding = 0
-    st.markdown(f""" <style>
-        .reportview-container .main .block-container{{
-            padding-top: {padding}rem;
-            padding-bottom: {padding}rem;
-    }} </style> """, unsafe_allow_html=True)
-
-    hide_decoration_bar_style = '''
-        <style>
-            header {visibility: hidden;}
-        </style>
-    '''
-    st.markdown(hide_decoration_bar_style, unsafe_allow_html=True)
     
-    st.markdown(""" <style>
-        #MainMenu {visibility: hidden;}
-        footer {visibility: hidden;}
-        </style> """, unsafe_allow_html=True)
+    st.markdown(markdowns.reconstruction_style, unsafe_allow_html=True)
 
-    # st.sidebar.header('2163 - Any Shot Learning')
-    # selected_demo = st.sidebar.selectbox('Select a Demo', np.array(["test1", "test2"]))
-    st.title('In progress UniT demo')
+    #st.markdown(markdowns.remove_padding, unsafe_allow_html=True)
+
+    st.markdown(markdowns.hide_decoration_bar_style, unsafe_allow_html=True)
+    
+    st.markdown(markdowns.hide_main_menu, unsafe_allow_html=True)
+
+    st.markdown(markdowns.page_title, unsafe_allow_html=True)
+    st.markdown(markdowns.cv_group_title, unsafe_allow_html=True)
     
     # background on image level vs instance level annotation
     # wouldn't it be nice to be able to transfer knowledge from base classes to novel!
@@ -96,7 +83,7 @@ def main():
 
     #st.image(imgs, width=250, caption=[1,2,3,4,5,6])
 
-    st.markdown(markdowns.choose_image_header, unsafe_allow_html=True)
+    st.markdown(markdowns.object_selection_header, unsafe_allow_html=True)
 
     image_columns = st.columns([1,1,1,1,1,1])
     for i, col in enumerate(image_columns):
@@ -106,12 +93,8 @@ def main():
     checkboxkey = ['1','2','3','4','5','6']
     selected = [False]*6
     for i, col in enumerate(selection_columns):
-        # st.write(markdowns.radio_selection_styles, unsafe_allow_html=True)
-        # selected_image = st.radio("", list(loaded_images.keys()))
-        col.checkbox(checkboxkey[i])
+        selected[i] = col.checkbox(checkboxkey[i])
 
-    # OR
-    # upload your own
     st.markdown(markdowns.upload_file_header, unsafe_allow_html=True)
     uploaded_files = st.file_uploader("Choose a file", accept_multiple_files=True)
     for uploaded_file in uploaded_files:
@@ -120,11 +103,10 @@ def main():
                  caption=uploaded_file.name,
                  width=350)
 
-    # select a model
-    st.markdown(markdowns.select_model_header, unsafe_allow_html=True)
+    st.markdown(markdowns.choose_model_header, unsafe_allow_html=True)
     model_options = ("None", "Pre-trained A", "Pre-trained B")
     st.write(markdowns.selectbox_styles, unsafe_allow_html=True)
-    selected_model = st.selectbox("Select a model", model_options)
+    selected_model = st.selectbox("Model options", model_options)
 
     if len(selected_model) == 0 or selected_model == "None":
         return
@@ -132,20 +114,33 @@ def main():
 
     # RUN!
     col1, col2, col3 = st.columns([1, 1, 1])
-    st.markdown(markdowns.run_model_button, unsafe_allow_html=True)
+    st.markdown(markdowns.button_style, unsafe_allow_html=True)
+    
+    #st.markdown(markdowns.test, unsafe_allow_html=True)
+
     global show_rec
     if col2.button("Run Model"):
         show_rec = True
+        # run the model here.. use selected_model
 
-    # results
     if show_rec:
-        st.write("reconstruction")
+        if len(np.where(selected)[0]) != 0:
+            st.markdown(markdowns.results_line, unsafe_allow_html=True)
+            i1, i2 = st.columns([1, 1])
+            i1.image(imgs[np.where(selected)[0][0]], width=300)
+            i2.image(path+"/images/cvlab.png", width=300)
+        else:
+            st.markdown(markdowns.try_again_line, unsafe_allow_html=True)
 
-    st.download_button(
-        label = 'Download some text', 
-        data = '''text_contents''', 
-        file_name = "my_file.xml", 
-        mime='application/xml')
+
+    col1, col2, col3 = st.columns([1, 1, 1])
+    with col2:
+        st.markdown(markdowns.button_style, unsafe_allow_html=True)
+        st.download_button(
+            label = 'Download results', 
+            data = '''text_contents''', 
+            file_name = "my_file.xml", 
+            mime='application/xml')
 
 if __name__ == "__main__":
     main()
